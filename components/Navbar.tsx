@@ -1,9 +1,15 @@
+"use client";
+
 import { NAV_LINKS } from "@/constants"
 import Image from "next/image"
 import Link from "next/link"
 import Button from "./Button"
+import { useState } from "react"
 
 const Navbar = () => {
+
+    const [toggle,setToggle] = useState(false);
+
     return (
         <nav className="flexBetween max-container padding-container relative z-30 py-5">
             <Link href="/">
@@ -19,7 +25,20 @@ const Navbar = () => {
             <div className="lg:flexCenter hidden">
                 <Button type="button" title="Login" icon="/user.svg" variant="btn_dark_green"/>
             </div>
-            <Image src="menu.svg" alt="menu" width={32} height={32} className="inline-block cursor-pointer lg:hidden"/>
+            <Image src={`${toggle ? "close-menu.svg" : "menu.svg"}`} alt="menu" width={32} height={32} className="inline-block cursor-pointer lg:hidden" onClick={() => setToggle((prev)=> !prev)}/>
+
+            <div className={`${toggle ? 'flexCenter' : 'hidden'} lg:hidden p-6 bg-green-50 absolute top-20 right-0 w-full sidebar rounded-xl`}>
+                <ul className="h-full flexCenter flex-col gap-4">
+                    {NAV_LINKS.map((link) => (
+                        <Link href={link.href} key={link.key} className="regular-16 text-white flexCenter cursor-pointer pb-1.5 transition-all hover:font-bold">
+                            {link.label}
+                        </Link>
+                    ))}
+                    <Link href="/" className="regular-16 text-white flexCenter cursor-pointer pb-1.5 transition-all hover:font-bold">
+                        Login
+                    </Link>
+                </ul>
+            </div>
         </nav>
     )
 }
